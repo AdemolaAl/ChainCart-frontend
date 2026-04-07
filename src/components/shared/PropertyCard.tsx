@@ -24,27 +24,50 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             {discount}% OFF
           </span>
         )}
-        <img src={image_of_land} alt={title}
-          className="w-full h-[150px] sm:h-[180px] md:h-[150px] object-cover group-hover:scale-105 transition-transform duration-700" />
+        <img
+          src={image_of_land}
+          alt={title}
+          className="w-full h-[150px] sm:h-[180px] md:h-[150px] object-cover group-hover:scale-105 transition-transform duration-700"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent" />
       </div>
 
       <CardContent className="px-4 py-3">
         <h3 className="text-base font-semibold text-white truncate">{title}</h3>
-        <p className="text-gray-500 text-xs mt-1">Lat: {mapping_location.lat}</p>
-        <p className="text-gray-500 text-xs">Lng: {mapping_location.lng}</p>
+        {mapping_location && (
+          <>
+            <p>Lat: {mapping_location.lat}</p>
+            <p>Lng: {mapping_location.lng}</p>
+          </>
+        )}
 
         <div className="flex items-center gap-2 mt-3">
-          {oldPrice && <span className="text-gray-600 line-through text-sm">{oldPrice} XION</span>}
-          <span className="text-cyan-400 text-lg font-bold">{newPrice || price} <span className="text-xs text-gray-500">XION</span></span>
+          {oldPrice && (
+            <span className="text-gray-600 line-through text-sm">
+              {oldPrice} XION
+            </span>
+          )}
+          <span className="text-cyan-400 text-lg font-bold">
+            {newPrice || price}{" "}
+            <span className="text-xs text-gray-500">XION</span>
+          </span>
         </div>
 
-        <p className="text-gray-500 text-xs mt-2">Available: <span className="text-cyan-400/80">{stock}</span></p>
-        {reviews > 0 && <p className="text-gray-600 text-xs">{reviews} Reviews</p>}
+        <p className="text-gray-500 text-xs mt-2">
+          Available: <span className="text-cyan-400/80">{stock}</span>
+        </p>
+        {reviews > 0 && (
+          <p className="text-gray-600 text-xs">{reviews} Reviews</p>
+        )}
 
         {isAddToCart && isAuthenticated && (
-          <AppButton label="Add To Cart" isLoading={isAddingToCart} onClick={handleAddToCart}
-            className="w-full mt-4" size="sm" />
+          <AppButton
+            label="Add To Cart"
+            isLoading={isAddingToCart}
+            onClick={handleAddToCart}
+            className="w-full mt-4"
+            size="sm"
+          />
         )}
       </CardContent>
     </Card>
