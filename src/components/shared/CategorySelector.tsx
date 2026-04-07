@@ -12,52 +12,38 @@ const CategorySelector: React.FC = () => {
 
   return (
     <div className="relative flex flex-col items-start gap-2">
-      <div className="flex items-center gap-2 border rounded-lg p-2">
-        <Button size="icon">
+      <div className="flex items-center gap-2 border border-gray-700/40 rounded-xl p-1.5 bg-gray-900/40">
+        <Button size="icon" variant="ghost" className="text-gray-400 hover:text-cyan-300">
           <Menu className="w-5 h-5" />
         </Button>
-
-        <Button
-          className="flex items-center gap-2 text-white"
-          onClick={() => setIsOpen((prev) => !prev)}
-        >
+        <Button className="flex items-center gap-2" variant="outline" size="sm"
+          onClick={() => setIsOpen((prev) => !prev)}>
           All Categories
           <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
             <ChevronDown className="w-4 h-4" />
           </motion.span>
         </Button>
         {selectedCategory && (
-        <div className="text-sm text-gray-400 mt-1">
-          <span className="text-warp-100 font-medium bg-gray-200 p-2 rounded-lg">{selectedCategory}</span>
-        </div>
-      )}
+          <div className="text-xs text-cyan-400 font-medium bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-full">
+            {selectedCategory}
+          </div>
+        )}
       </div>
 
-      
-
-      {/* Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2, ease: "easeInOut" }}
             className={cn(
-              "absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md z-50 border border-gray-200",
-              isOpen && "overflow-hidden"
+              "absolute left-0 top-full mt-2 w-48 bg-gray-900/95 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.5)] rounded-xl z-50 border border-gray-700/50 overflow-hidden"
             )}
           >
             <ul className="py-2" onMouseLeave={() => setIsOpen(false)}>
               {categories.map((category) => (
-                <li
-                  key={category}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors text-warp-100"
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    setIsOpen(false);
-                  }}
-                >
+                <li key={category}
+                  className="px-4 py-2.5 hover:bg-cyan-500/10 cursor-pointer transition-colors text-gray-300 hover:text-cyan-300 text-sm"
+                  onClick={() => { setSelectedCategory(category); setIsOpen(false); }}>
                   {category}
                 </li>
               ))}

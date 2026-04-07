@@ -23,83 +23,52 @@ interface InputFieldProps {
 }
 
 export function InputField({
-  id,
-  label,
-  placeholder,
-  type = "text",
-  required = false,
-  disabled = false,
-  className = "",
-  containerClassName = "",
-  value,
-  onChange,
-  onBlur,
-  onFocus,
-  errorMessage,
-  icon,
-  onIconClick,
+  id, label, placeholder, type = "text", required = false, disabled = false,
+  className = "", containerClassName = "", value, onChange, onBlur, onFocus,
+  errorMessage, icon, onIconClick,
 }: InputFieldProps) {
   const [isPasswordVisible, setIsPasswordVisible] = React.useState<boolean>(false);
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible((prev) => !prev);
-  };
+  const togglePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
 
   const borderColor = errorMessage
-    ? "border-red-500 focus:ring-red-500"
-    : "border-[#E7E7E8] dark:border-gray-600 focus:ring-codeline-200";
+    ? "border-red-500/60 focus:ring-red-500/30"
+    : "border-gray-700/60 focus:ring-cyan-500/20 focus:border-cyan-500/60";
 
   return (
     <div className={`${containerClassName}`}>
       {label && (
-        <Label htmlFor={id} className="text-gray-800 dark:text-gray-200 text-lg block mb-2">
+        <Label htmlFor={id} className="text-gray-300 text-sm block mb-2 tracking-wide">
           {label}
-          {required && <span className="text-red-500 font-black ml-[2px]">*</span>}
+          {required && <span className="text-cyan-400 font-black ml-[2px]">*</span>}
         </Label>
       )}
       <div className="relative w-full">
         <Input
-          id={id}
-          name={id}
+          id={id} name={id}
           type={type === "password" && isPasswordVisible ? "text" : type}
-          placeholder={placeholder}
-          required={required}
-          value={value}
-          disabled={disabled}
-          onChange={onChange}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          className={`bg-[#F9F9F9] dark:bg-gray-800 text-black dark:text-white py-6 pr-10 ${borderColor} ${className}`}
+          placeholder={placeholder} required={required} value={value}
+          disabled={disabled} onChange={onChange} onBlur={onBlur} onFocus={onFocus}
+          className={`bg-gray-900/60 backdrop-blur-sm text-gray-100 py-6 pr-10 ${borderColor} ${className}`}
           autoComplete={type === "password" ? "current-password" : "new-password"}
           step={type === "number" ? "0.0001" : undefined}
           min={type === "number" ? "0" : undefined}
         />
-
         {icon && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
-            onClick={onIconClick}
-          >
+          <Button type="button" variant="ghost" size="icon"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:bg-transparent text-gray-400 hover:text-cyan-300"
+            onClick={onIconClick}>
             {icon}
           </Button>
         )}
-
         {type === "password" && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-            onClick={togglePasswordVisibility}
-          >
+          <Button type="button" variant="ghost" size="icon"
+            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent text-gray-400 hover:text-cyan-300"
+            onClick={togglePasswordVisibility}>
             {isPasswordVisible ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
           </Button>
         )}
       </div>
-      {errorMessage && <p className="text-red-500 text-sm mt-1">{errorMessage}</p>}
+      {errorMessage && <p className="text-red-400 text-sm mt-1">{errorMessage}</p>}
     </div>
   );
 }

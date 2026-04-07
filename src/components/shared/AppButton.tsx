@@ -15,16 +15,8 @@ interface IAppButton extends React.ComponentProps<typeof Button> {
 }
 
 export default function AppButton({
-  label,
-  buttonStyle = "",
-  rightIcon,
-  isLoading = false,
-  textStyle = "",
-  disabled = false,
-  leftIcon,
-  onPress,
-  children, 
-  ...rest 
+  label, buttonStyle = "", rightIcon, isLoading = false, textStyle = "",
+  disabled = false, leftIcon, onPress, children, ...rest
 }: IAppButton) {
   return (
     <Button
@@ -34,7 +26,7 @@ export default function AppButton({
       {...rest} 
     >
       {!isLoading && leftIcon && <span className="ml-2">{leftIcon}</span>}
-      {isLoading && <Loader2 className="animate-spin mr-2" size={20} />}
+      {isLoading && <Loader2 className="animate-spin mr-2 text-cyan-300" size={20} />}
       {!isLoading && label && <span className={`${textStyle}`}>{label}</span>}
       {!isLoading && rightIcon && <span className="ml-2">{rightIcon}</span>}
       {!isLoading && children} 

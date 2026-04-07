@@ -3,41 +3,14 @@ import Modal from "react-modal";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
-// Set the app element to avoid accessibility issues
 Modal.setAppElement("#root");
 
-interface SearchModalProps {
-  query: string;
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-}
+interface SearchModalProps { query: string; isOpen: boolean; setIsOpen: (open: boolean) => void; }
 
-// Predefined property listings
 const properties = [
-  {
-    title: "Swamp Land",
-    size: "1 acre",
-    price: "0.1 XION",
-    location: "leave this, fill it later",
-    availability: "Available",
-    searchText: ["Swamp Land", "Swamp Property"]
-  },
-  {
-    title: "Duplex Islands",
-    size: "Duplex Apartment",
-    price: "0.2 XION",
-    location: "leave this, fill it later",
-    availability: "Available",
-    searchText: ["Duplex Property", "Duplex Islands"]
-  },
-  {
-    title: "Mansion Islands",
-    size: "Mansion Apartment",
-    price: "0.25 XION",
-    location: "leave this, fill it later",
-    availability: "Available",
-    searchText: ["Mansion Property", "Mansion Islands"]
-  },
+  { title: "Swamp Land", size: "1 acre", price: "0.1 XION", location: "TBD", availability: "Available", searchText: ["Swamp Land", "Swamp Property"] },
+  { title: "Duplex Islands", size: "Duplex Apartment", price: "0.2 XION", location: "TBD", availability: "Available", searchText: ["Duplex Property", "Duplex Islands"] },
+  { title: "Mansion Islands", size: "Mansion Apartment", price: "0.25 XION", location: "TBD", availability: "Available", searchText: ["Mansion Property", "Mansion Islands"] },
 ];
 
 const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) => {
@@ -45,67 +18,34 @@ const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) =
 
   useEffect(() => {
     if (isOpen && query.trim() !== "") {
-      searchProperties(query);
+      const formattedQuery = query.toLowerCase();
+      const matchingProperties = properties.filter((property) =>
+        property.searchText.some((text) => formattedQuery.includes(text.toLowerCase()))
+      );
+      if (matchingProperties.length > 0) {
+        setResults(matchingProperties.map((p) =>
+          `**Title:** ${p.title}\n**Size:** ${p.size}\n**Price:** ${p.price}\n**Availability:** ${p.availability}`
+        ).join("\n\n"));
+      } else setResults("No matching properties found.");
     }
   }, [isOpen, query]);
 
-  const searchProperties = (query: string) => {
-    const formattedQuery = query.toLowerCase();
-
-    // Check if the query contains the exact title of any property
-    const matchingProperties = properties.filter((property) =>
-      property.searchText.some((text) => formattedQuery.includes(text.toLowerCase()))
-    );
-    
-
-    if (matchingProperties.length > 0) {
-      const formattedResults = matchingProperties
-        .map((property) => `
-          **Title of the Land:** ${property.title}
-          **Size of Land:** ${property.size}
-          **Price of the Land:** ${property.price}
-          **Location:** ${property.location}
-          **Availability:** ${property.availability}
-        `)
-        .join("\n\n");
-
-      setResults(formattedResults);
-    } else {
-      setResults("🚫 Land not currently available at the moment.");
-    }
-  };
-
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={() => setIsOpen(false)}
-      className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg mx-auto outline-none relative"
-      overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
-    >
-      {/* Close Button */}
-      <Button 
-        variant="ghost" 
-        className="absolute top-2 right-2 p-2 rounded-full" 
-        onClick={() => setIsOpen(false)}
-      >
+    <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)}
+      className="bg-gray-900/95 backdrop-blur-xl rounded-2xl p-6 max-w-md w-full shadow-[0_0_60px_rgba(6,182,212,0.1)] mx-auto outline-none relative border border-gray-700/50"
+      overlayClassName="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+      <Button variant="ghost" className="absolute top-3 right-3 p-2 rounded-full text-gray-400 hover:text-cyan-300" onClick={() => setIsOpen(false)}>
         <X className="w-5 h-5" />
       </Button>
-
-      {/* Modal Header (Fixed) */}
-      <div className="sticky top-0 bg-white z-10 pb-2 border-b">
-        <h2 className="text-xl font-semibold text-gray-900 text-center">Search Results</h2>
-        <p className="text-center text-gray-600 mt-2">
-          Query: <span className="font-semibold">{query}</span>
+      <div className="pb-3 border-b border-gray-800/50">
+        <h2 className="text-lg font-semibold text-white text-center">Search Results</h2>
+        <p className="text-center text-gray-500 mt-1 text-sm">
+          Query: <span className="font-semibold text-cyan-400">{query}</span>
         </p>
       </div>
-
-      {/* Scrollable Search Results */}
-      <div className="mt-4 text-gray-700 whitespace-pre-line max-h-80 overflow-y-auto p-2">
-        {results}
-      </div>
+      <div className="mt-4 text-gray-400 whitespace-pre-line max-h-80 overflow-y-auto p-2 text-sm">{results}</div>
     </Modal>
   );
 };
 
 export default SearchModal;
- 

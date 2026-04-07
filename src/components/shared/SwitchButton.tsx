@@ -8,29 +8,21 @@ export default function SwitchButton() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative flex p-1 rounded-lg w-64 justify-center md:justify-start">
+    <section className="relative flex p-1 rounded-xl w-64 justify-center md:justify-start bg-gray-900/60 border border-gray-700/40">
       <motion.div
-        className="absolute inset-y-0 left-1/2 md:left-0 md:w-1/2 rounded-lg transition-all bg-gray-200"
+        className="absolute inset-y-1 w-1/2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30"
         animate={{ x: selected === "seller" ? "100%" : "0%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       />
-      <AppButton
-        label="Buyer"
-        variant={selected === "buyer" ? "default" : "secondary"}
-        className="px-4 md:w-1/2 rounded-none relative z-10 text-center"
-        onClick={() => {
-          setSelected("buyer");
-          navigate("/");
-        }}
+      <AppButton label="Buyer"
+        variant={selected === "buyer" ? "ghost" : "ghost"}
+        className={`px-4 w-1/2 rounded-lg relative z-10 text-center ${selected === "buyer" ? "text-cyan-300" : "text-gray-500"}`}
+        onClick={() => { setSelected("buyer"); navigate("/"); }}
       />
-      <AppButton
-        label="Seller"
-        variant={selected === "seller" ? "default" : "secondary"}
-        className={`px-4 md:w-1/2 rounded-none relative z-10 text-center`}
-        onClick={() => {
-          setSelected("seller");
-          navigate("/seller");
-        }}
+      <AppButton label="Seller"
+        variant="ghost"
+        className={`px-4 w-1/2 rounded-lg relative z-10 text-center ${selected === "seller" ? "text-cyan-300" : "text-gray-500"}`}
+        onClick={() => { setSelected("seller"); navigate("/seller"); }}
       />
     </section>
   );
